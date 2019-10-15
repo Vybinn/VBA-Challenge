@@ -1,0 +1,81 @@
+Sub Multiple_year_stock_data():
+
+Dim Ticker As String
+Dim StVolume As Double
+Dim YrChange As Double
+Dim PChange As Double
+Dim Summary_Table_Row As Integer
+Dim OpenVal, CloseVal As Double
+
+
+For Each ws In Worksheets
+    
+    Summary_Table_Row = 2
+    StVolume = 0
+
+    LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+    OpenVal = ws.Cells(2, 3)
+    For i = 2 To LastRow
+    
+        
+        If ws.Cells(i + 1, 1) <> ws.Cells(i, 1) Then
+            Ticker = ws.Cells(i, 1)
+            StVolume = StVolume + ws.Cells(i, 7)
+        
+            CloseVal = ws.Cells(i, 6)
+           
+            YrChange = CloseVal - OpenVal
+            
+            
+            If OpenVal = 0 Then
+                PChange = 0
+            Else
+                PChange = YrChange / OpenVal * 100
+            End If
+            
+            ws.Range("I" & Summary_Table_Row).Value = Ticker
+            ws.Range("J" & Summary_Table_Row).Value = YrChange
+            ws.Range("K" & Summary_Table_Row).Value = (PChange + "%")
+            ws.Range("L" & Summary_Table_Row).Value = StVolume
+            
+             
+            StVolume = 0
+       
+            OpenVal = ws.Cells(i + 1, 3)
+            
+             ' Conditional formatting for pos / neg change in stock price
+            
+             If ws.Range("J" & Summary_Table_Row).Value >= 0 Then
+                ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
+            
+             Else
+                ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
+            
+                End If
+            
+                Summary_Table_Row = Summary_Table_Row + 1
+        Else
+            StVolume = StVolume + ws.Cells(i, 7)
+           
+        
+        
+       
+        
+        End If
+        
+
+        
+    Next i
+    
+    ' Label columns
+    
+    ws.Range("I1") = "Ticker"
+    ws.Range("J1") = "Yearly Change"
+    ws.Range("K1") = "Percent Change"
+    ws.Range("L1") = "Total Stock Volume"
+    
+Next ws
+
+
+End Sub
