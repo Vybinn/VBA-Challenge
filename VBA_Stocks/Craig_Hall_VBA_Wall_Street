@@ -1,4 +1,4 @@
-Sub Multiple_year_stock_data():
+Sub VBAMacro()
 
 Dim Ticker As String
 Dim StVolume As Double
@@ -36,7 +36,8 @@ For Each ws In Worksheets
             
             ws.Range("I" & Summary_Table_Row).Value = Ticker
             ws.Range("J" & Summary_Table_Row).Value = YrChange
-            ws.Range("K" & Summary_Table_Row).Value = (PChange + "%")
+            ws.Range("K" & Summary_Table_Row).Value = PChange
+            ws.Range("K" & Summary_Table_Row).NumberFormat = "0.00%"
             ws.Range("L" & Summary_Table_Row).Value = StVolume
             
              
@@ -79,3 +80,4 @@ Next ws
 
 
 End Sub
+
